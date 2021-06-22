@@ -1,4 +1,4 @@
-# CWRU Bearing Dataset
+# CNN for Paderborn Bearing Dataset
 ## Introduction
 This dataset is commonly used as benchmark for bearing fault classification algorithm 
 [(Link)](https://csegroups.case.edu/bearingdatacenter/home), which contains vibration signal data of normal and fault bearings. 
