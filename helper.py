@@ -102,9 +102,12 @@ def matfile_to_df(folder_path, data_cat):
     df = pd.DataFrame.from_dict(dic).T
     df = df.reset_index().rename(mapper={'index':'filename'},axis=1)
     df['label'] = df['filename'].apply(label)
-    return df[['filename', data_cat, 'label']]
+    if type(data_cat) is not list:
+        return df[['filename', data_cat, 'label']]
+    elif type(data_cat) is list:
+        return df[['filename', *data_cat, 'label']]
 
-def divide_signal(df, segment_length):
+def divide_signal(df, segment_length, data_cat):
     '''
     This function divide the signal into segments, each with a specific number
     of points as defined by segment_length. Each segment will be added as an
@@ -121,37 +124,63 @@ def divide_signal(df, segment_length):
         DataFrame with segmented signals and their corresponding filename and
         label
     '''
-    dic = {}
-    idx = 0
-    for i in range(df.shape[0]):
-        n_sample_points = len(df.iloc[i,1])
-        n_segments = n_sample_points // segment_length
-        for segment in range(n_segments):
-            dic[idx] = {
-                'signal': df.iloc[i,1][segment_length * segment:segment_length * (segment+1)],
-                'label': df.iloc[i,2],
-                'filename' : df.iloc[i,0]
-            }
-            idx += 1
-    df_tmp = pd.DataFrame.from_dict(dic,orient='index')
-    df_output = pd.concat(
-                [df_tmp[['label', 'filename']], 
-                pd.DataFrame(np.vstack(df_tmp["signal"]))
-                ], 
-                axis=1 )
-    return df_output
-
+    if type(data_cat) is not list:
+        dic = {}
+        idx = 0
+        for i in range(df.shape[0]):
+            n_sample_points = len(df.iloc[i,1])
+            n_segments = n_sample_points // segment_length
+            for segment in range(n_segments):
+                dic[idx] = {
+                    'signal': df.iloc[i,1][segment_length * segment:segment_length * (segment+1)],
+                    'label': df.iloc[i,2],
+                    'filename' : df.iloc[i,0]
+                }
+                idx += 1
+        df_tmp = pd.DataFrame.from_dict(dic,orient='index')
+        df_output = pd.concat(
+                    [df_tmp[['label', 'filename']], 
+                    pd.DataFrame(np.vstack(df_tmp["signal"]))
+                    ], 
+                    axis=1 )
+        return df_output
+    
+    elif type(data_cat) is list:
+        dic = {}
+        idx = 0
+        for i in range(df.shape[0]):
+            for category in data_cat:
+                n_sample_points = len(df[category][0])
+                n_segments = n_sample_points // segment_length
+                for segment in range(n_segments):
+                    dic[idx] = {
+                        'signal': df[category][0][segment_length * segment:segment_length * (segment+1)],
+                        'label': df.iloc[i,-1],
+                        'filename' : df.iloc[i,0]
+                    }
+                    idx += 1
+        df_tmp = pd.DataFrame.from_dict(dic,orient='index')
+        df_output = pd.concat(
+                    [df_tmp[['label', 'filename']], 
+                    pd.DataFrame(np.vstack(df_tmp["signal"]))
+                    ], 
+                    axis=1 )
+        return df_output
 
 def normalize_signal(df, data_cat):
     '''
     Normalize the signals in the DataFrame returned by matfile_to_df() by subtracting
     the mean and dividing by the standard deviation.
     '''
-    # DE_time
-    mean = df[data_cat].apply(np.mean)
-    std = df[data_cat].apply(np.std)
-    df[data_cat] = (df[data_cat] - mean) / std
-
+    if type(data_cat) is not list:
+        mean = df[data_cat].apply(np.mean)
+        std = df[data_cat].apply(np.std)
+        df[data_cat] = (df[data_cat] - mean) / std
+    elif type(data_cat) is list:
+        for category in data_cat:
+            mean = df[category].apply(np.mean)
+            std = df[category].apply(np.std)
+            df[category] = (df[category] - mean) / std
     return df
 
 def get_df_all(data_path, data_cat, segment_length=512, normalize=False):
@@ -168,19 +197,24 @@ def get_df_all(data_path, data_cat, segment_length=512, normalize=False):
             Number of points per segment. See divide_signal() function
         normalize:
             Boolean to perform normalization to the signal data
+        data_cat:
+            Data category of interest, i.e. 'force', 'phase_current_1', 'phase_current_2',
+                                            'speed', 'temp_2_bearing_module', 'torque',
+                                            'vibration_1'
     Return:
         df_all:
             DataFrame which is ready to be used for model training.
     '''
+    
     df = matfile_to_df(data_path, data_cat)
 
     if normalize:
         normalize_signal(df, data_cat)
-    df_processed = divide_signal(df, segment_length)
+    df_processed = divide_signal(df, segment_length, data_cat)
 
     map_label = {'NORMAL':0, 'IR':1, 'OR':2, 'OR + IR':3}
     df_processed['label'] = df_processed['label'].map(map_label)
-    return df_processed 
+    return df_processed
     
 def download(url:str, dest_dir:Path, save_name:str, suffix=None) -> Path:
     assert isinstance(dest_dir, Path), "dest_dir must be a Path object"
