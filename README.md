@@ -13,3 +13,5 @@ I add the capability of data cleaning and preprocessing to select several types 
 
 If you want to analyze more than one type of sensors simultaneously, you can set the parameter `data_cat` of function `get_df_all` become a list,
 ex: `data_cat = ['vibration_1', 'phase_current_1']`
+
+credit to [(XiongMeijing)](https://github.com/XiongMeijing/CWRU-1) for inspiring me built the model and processed the Paderborn dataset
