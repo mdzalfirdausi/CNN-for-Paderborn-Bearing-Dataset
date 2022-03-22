@@ -10,8 +10,9 @@ The notebook `Paderborn_Dataset.ipynb` shows the training process and the traine
 
 I add the capability of data cleaning and preprocessing to select several types of sensor which is:
 `force`, `phase_current_1`, `phase_current_2`, `speed`, `temp_2_bearing_module`, `torque`, `vibration_1`
+Keep in mind that the raw data (.mat files) of the Paderborn dataset must be stored in one folder in order to extract the intended signal.
 
 If you want to analyze more than one type of sensors simultaneously, you can set the parameter `data_cat` of function `get_df_all` become a list,
-ex: `data_cat = ['vibration_1', 'phase_current_1']`
+i.e.: `data_cat = ['vibration_1', 'phase_current_1']`
 
 credit to [(XiongMeijing)](https://github.com/XiongMeijing/CWRU-1) for inspiring me built the model and processed the Paderborn dataset
