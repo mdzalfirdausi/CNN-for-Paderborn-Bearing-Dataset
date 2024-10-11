@@ -2,7 +2,7 @@
 ## Introduction
 This repository is my work to implement CNN for Paderborn bearing fault dataset
 
-The dataset can be downloaded from [(here)](https://mb.uni-paderborn.de/kat/forschung/datacenter/bearing-datacenter)
+The dataset can be downloaded from [(here)](https://mb.uni-paderborn.de/kat/forschung/datacenter/bearing-datacenter) (update 11/Oct/24, the dataset hasn't been available in the link)
 
 Helper functions for data cleaning and preprocessing are written in the `helper.py` module, whereas helper functions for training using Pytorch Framework are written in the `train_helper.py` module. To select two or three layers 1D CNN to be used, please refer to `nn_model.py`
 
