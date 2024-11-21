@@ -1,6 +1,6 @@
 # CNN for Paderborn Bearing Dataset
 ## Introduction
-This repository is my work to implement CNN for Paderborn bearing fault dataset
+This repository is my work to implement CNN for Paderborn bearing fault dataset, please cite my corresponding paper [here]([url](https://cst.kipmi.or.id/journal/article/view/746))
 
 The dataset can be downloaded from [(here)](https://mb.uni-paderborn.de/kat/forschung/datacenter/bearing-datacenter) (update 11/Oct/24, the dataset hasn't been available in the link)
 
