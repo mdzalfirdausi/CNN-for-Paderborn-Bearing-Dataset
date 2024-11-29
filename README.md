@@ -16,3 +16,14 @@ If you want to analyze more than one type of sensors simultaneously, you can set
 i.e.: `data_cat = ['vibration_1', 'phase_current_1']`
 
 credit to [(XiongMeijing)](https://github.com/XiongMeijing/CWRU-1) for inspiring me built the model and processed the Paderborn dataset
+
+## Publication
+@article{al2022concise,
+  title={Concise convolutional neural network model for fault detection},
+  author={Al Firdausi, Muhammad and Ahmad, Shafiq},
+  journal={Communications in Science and Technology},
+  volume={7},
+  number={1},
+  pages={62--72},
+  year={2022}
+}
