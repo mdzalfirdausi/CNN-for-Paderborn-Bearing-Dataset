@@ -18,6 +18,8 @@ i.e.: `data_cat = ['vibration_1', 'phase_current_1']`
 credit to [(XiongMeijing)](https://github.com/XiongMeijing/CWRU-1) for inspiring me built the model and processed the Paderborn dataset
 
 ## Publication
+Please cite our paper if you use this code in your own work:
+```
 @article{al2022concise,
   title={Concise convolutional neural network model for fault detection},
   author={Al Firdausi, Muhammad and Ahmad, Shafiq},
@@ -27,3 +29,4 @@ credit to [(XiongMeijing)](https://github.com/XiongMeijing/CWRU-1) for inspiring
   pages={62--72},
   year={2022}
 }
+```
